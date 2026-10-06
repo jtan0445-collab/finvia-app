@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2124a0"><link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/assets/mark.png"><title>Finvia</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#dfeeff;--panel:#a9cbf7;--ink:#2124a0;--navy:#021b3a;--blue:#2f7bff;--pink:#f0ccff;--muted:#4a5aa8;--warn:#e0573a;--ok:#1f9d6b;--hard:#3a4357;--head:'Bricolage Grotesque',Poppins,system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 Poppins,system-ui,sans-serif}
+#app{max-width:480px;margin:0 auto;min-height:100vh;padding:calc(env(safe-area-inset-top,0px) + 14px) 16px 110px}
+h2,h3{font-family:var(--head);margin:0;letter-spacing:-.02em;font-weight:800}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}header img{height:40px}
+.ib{width:42px;height:42px;border-radius:50%;border:2px solid var(--panel);background:#fff;display:grid;place-items:center;color:var(--ink);cursor:pointer}
+.card{background:#fff;border-radius:24px;padding:18px;margin-bottom:14px;box-shadow:5px 5px 0 var(--hard)}
+.hero{background:linear-gradient(135deg,var(--navy),var(--ink) 60%,var(--blue));color:#fff;position:relative;overflow:hidden}
+.hero small{color:#c9dcf7}.big{font:800 36px/1.1 var(--head);margin:6px 0}.hero .up{color:#7be0b0;font-weight:600}
+.seg{position:absolute;right:14px;top:14px;display:flex;border:2px solid rgba(255,255,255,.4);border-radius:999px;overflow:hidden}
+.seg button{background:none;border:0;color:#fff;padding:5px 12px;font:600 12px Poppins;cursor:pointer}.seg .on{background:#fff;color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:12px}.stats b{display:block;font-size:13.5px;margin:2px 0}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.pos{color:var(--ok);font-weight:600}.neg{color:var(--warn);font-weight:600}
+.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;font-size:12.5px;font-weight:600}
+.qa button{background:none;border:0;color:var(--ink);font:600 12.5px Poppins;cursor:pointer}
+.qa i{width:52px;height:52px;border-radius:50%;background:var(--bg);display:grid;place-items:center;margin:0 auto 6px;font-style:normal;position:relative}
+.qa em{position:absolute;top:-4px;right:-4px;background:var(--warn);color:#fff;border-radius:99px;font:600 10px Poppins;padding:1px 6px}
+.legend{display:flex;gap:14px;justify-content:center;font-size:12px;margin-top:6px}
+.insight{display:flex;gap:12px;align-items:center;background:var(--pink);box-shadow:none}.insight p{margin:0;font-size:14px;font-weight:500}
+.row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--bg)}.row:first-of-type{border:0}.row small{display:block;color:var(--muted)}
+.tip{font-size:12.5px;color:var(--muted);min-height:20px;text-align:center}
+nav{position:fixed;left:0;right:0;bottom:0;background:#fff;box-shadow:0 -8px 24px -12px rgba(2,27,58,.35);padding:8px 8px calc(env(safe-area-inset-bottom,0px) + 8px);z-index:5}
+nav div{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;text-align:center}
+nav button{background:none;border:0;color:#7d8fc9;font:500 11px Poppins;cursor:pointer;padding:4px}nav button.on{color:var(--blue);font-weight:600}
+nav .fab{width:56px;height:56px;border-radius:50%;background:var(--blue);color:#fff;font-size:30px;margin:-26px auto 0;box-shadow:0 10px 20px -8px var(--navy)}
+.sheet{position:fixed;inset:0;background:rgba(2,27,58,.5);display:none;align-items:end;z-index:9}.sheet.on{display:flex}
+.sheet form{background:#fff;border-radius:28px 28px 0 0;padding:22px;width:100%;max-width:480px;margin:0 auto;display:grid;gap:12px}
+.sheet input{font:400 15px Poppins;border:2px solid var(--panel);border-radius:12px;padding:10px 14px;width:100%}.sheet input:focus{outline:none;border-color:var(--blue)}
+.tg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.tg label{border:2px solid var(--panel);border-radius:12px;text-align:center;padding:8px;cursor:pointer;font-weight:600}.tg input{display:none}.tg label:has(input:checked){background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn{background:var(--navy);color:#fff;border:0;border-radius:999px;padding:13px;font:600 15px Poppins;cursor:pointer}.err{color:var(--warn);font-size:13px;min-height:18px;margin:0}
+.view{display:none}.view.on{display:block}
+</style></head><body><div id="app">
+<header><img src="/assets/logo.png" alt="Finvia"><button class="ib" aria-label="Alerts" onclick="go('chart')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 0 0 4 0"/></svg></button></header>
+
+<section class="view on" id="v-dashboard">
+<div class="card hero"><small>Total Cash Flow</small><div class="seg"><button data-r="month" class="on">Month</button><button data-r="week">Week</button></div>
+<div class="big" id="bal">RM –</div><small>Net Cash Flow (<span id="rl">This Month</span>)</small><div class="up" id="nchg"></div></div>
+<div class="card stats"><div><span class="dot" style="background:var(--ok)"></span>Cash In<b id="ci"></b><span id="cic"></span></div>
+<div><span class="dot" style="background:var(--warn)"></span>Cash Out<b id="co"></b><span id="coc"></span></div>
+<div><span class="dot" style="background:var(--blue)"></span>Net<b id="nt"></b><span id="ntc"></span></div></div>
+<div class="card qa"><button onclick="go('chart')"><i>🔔<em>!</em></i>Alert</button><button onclick="go('report')"><i>📄</i>Report</button><button onclick="go('chart')"><i>📊</i>Chart</button><button onclick="go('more')"><i>💬</i>Contact</button></div>
+<div class="card"><h3 style="font-size:18px;margin-bottom:8px">Cash Flow Overview</h3><svg id="ch" viewBox="0 0 400 200" width="100%"></svg>
+<div class="tip" id="tip">Tap a bar to read that day</div><div class="legend"><span><span class="dot" style="background:var(--ok)"></span>Cash In</span><span><span class="dot" style="background:var(--warn)"></span>Cash Out</span><span><span class="dot" style="background:var(--blue)"></span>Net</span></div></div>
+<div class="card insight"><span style="font-size:26px">💡</span><div><h3 style="font-size:16px">Cash Flow Insight</h3><p id="ins"></p></div></div></section>
+
+<section class="view" id="v-report"><h2 style="margin:6px 0 12px">Transactions</h2><div class="card" id="txl"></div></section>
+<section class="view" id="v-chart"><h2 style="margin:6px 0 12px">30-day forecast</h2><div class="card"><svg id="fc" viewBox="0 0 400 220" width="100%"></svg><div class="tip" id="ftip">Safety buffer RM 15,000 · projection from your last 14 days</div></div><div class="card insight" id="fins"></div></section>
+<section class="view" id="v-more"><h2 style="margin:6px 0 12px">Finvia</h2><div class="card"><p><b>Your cash, seen 30 days ahead.</b></p><p>Finvia does not approve loans. Referral only with your consent; the partner bank decides.</p><p><a href="mailto:hello.finvia@gmail.com" style="color:var(--blue)">hello.finvia@gmail.com</a><br>Finvia Sdn Bhd · Petaling Jaya, Selangor</p></div></section>
+</div>
+<nav><div><button data-v="dashboard" class="on">🏠<br>Dashboard</button><button data-v="report">📄<br>Report</button><button class="fab" id="add" aria-label="Add transaction">+</button><button data-v="chart">📊<br>Chart</button><button data-v="more">⋯<br>More</button></div></nav>
+<div class="sheet" id="sh"><form id="f"><h3>Add transaction</h3><div class="tg"><label><input type="radio" name="type" value="in" checked>Cash In</label><label><input type="radio" name="type" value="out">Cash Out</label></div>
+<input name="amount" type="number" step="0.01" min="0.01" placeholder="Amount (RM)" required><input name="note" placeholder="Note (optional)" maxlength="80"><p class="err" id="er"></p><button class="btn">Save</button></form></div>
+<script>
+const $=s=>document.querySelector(s),RM=v=>(v<0?'−':'')+'RM '+Math.abs(v).toLocaleString('en-MY',{maximumFractionDigits:0});
+let range='month',S='http://www.w3.org/2000/svg';
+const chg=(el,v,bad)=>{el.textContent=v==null?'':(v>=0?'↑ ':'↓ ')+Math.abs(v)+'%';el.className=(v>=0)!==!!bad?'pos':'neg'};
+async function load(){const d=await (await fetch('/api/dashboard?range='+range)).json();
+ $('#bal').textContent=RM(d.balance);$('#ci').textContent=RM(d.cashIn);$('#co').textContent=RM(d.cashOut);$('#nt').textContent=RM(d.net);
+ chg($('#cic'),d.changes.in);chg($('#coc'),d.changes.out,1);chg($('#ntc'),d.changes.net);$('#nchg').textContent=$('#ntc').textContent+' vs last '+range;
+ $('#rl').textContent=range==='week'?'This Week':'This Month';$('#ins').textContent=d.insight;$('#fins').innerHTML='<span style="font-size:26px">💡</span><p>'+d.insight+'</p>';
+ bars(d.series);fore(d.forecast);txs()}
+function bars(s){const g=$('#ch');g.innerHTML='';const W=400,H=200,m=Math.max(...s.map(x=>Math.max(x.in,x.out))),mid=105,k=85/m,w=W/s.length;let pts='';
+ s.forEach((x,i)=>{const n=x.in-x.out,cx=i*w+w/2;[['in',x.in,-1,'#1f9d6b'],['out',x.out,1,'#e0573a']].forEach(([t,v,sg,c])=>{const r=document.createElementNS(S,'rect');
+  r.setAttribute('x',i*w+w*.2);r.setAttribute('width',w*.6);r.setAttribute('rx',2);r.setAttribute('fill',c);r.setAttribute('opacity',.85);
+  r.setAttribute('y',sg<0?mid-v*k:mid);r.setAttribute('height',v*k);r.style.cursor='pointer';
+  r.onclick=()=>$('#tip').textContent=x.date+' · In '+RM(x.in)+' · Out '+RM(x.out)+' · Net '+RM(n);g.appendChild(r)});pts+=(i?'L':'M')+cx+' '+(mid-n*k)});
+ const l=document.createElementNS(S,'path');l.setAttribute('d',pts);l.setAttribute('fill','none');l.setAttribute('stroke','#2f7bff');l.setAttribute('stroke-width',2.5);g.appendChild(l);
+ const z=document.createElementNS(S,'line');[['x1',0],['x2',W],['y1',mid],['y2',mid]].forEach(([a,b])=>z.setAttribute(a,b));z.setAttribute('stroke','#b7d3f5');g.insertBefore(z,g.firstChild)}
+function fore(f){const g=$('#fc'),v=f.values,mx=Math.max(...v,f.buffer*2),mn=Math.min(...v,0),X=i=>20+i*360/30,Y=y=>190-(y-mn)/(mx-mn)*170;
+ let h='';if(f.belowBufferDay!=null){const a=X(f.belowBufferDay),b=X(f.zeroDay??30);h+=`<rect x="${a}" y="20" width="${b-a}" height="170" rx="10" fill="#f0ccff" opacity=".6"/><text x="${a+6}" y="36" font-size="11" fill="#2124a0">Referral window</text>`}
+ h+=`<line x1="20" x2="380" y1="${Y(f.buffer)}" y2="${Y(f.buffer)}" stroke="#7d8fc9" stroke-dasharray="5 5"/><line x1="20" x2="380" y1="${Y(0)}" y2="${Y(0)}" stroke="#e0573a" stroke-dasharray="5 5"/>`;
+ h+=`<path d="${v.map((y,i)=>(i?'L':'M')+X(i)+' '+Y(y)).join('')}" fill="none" stroke="#2f7bff" stroke-width="4" stroke-linecap="round"/><text x="20" y="212" font-size="11" fill="#4a5aa8">Today</text><text x="352" y="212" font-size="11" fill="#4a5aa8">Day 30</text>`;
+ g.innerHTML=h;g.onpointermove=e=>{const r=g.getBoundingClientRect(),i=Math.max(0,Math.min(30,Math.round(((e.clientX-r.left)/r.width*400-20)*30/360)));$('#ftip').textContent='Day '+i+' · '+RM(v[i])}}
+async function txs(){const t=await (await fetch('/api/transactions')).json();$('#txl').innerHTML=t.slice(0,20).map(x=>`<div class="row"><span><b>${x.note.replace(/</g,'&lt;')}</b><small>${x.date}</small></span><b class="${x.type==='in'?'pos':'neg'}">${x.type==='in'?'+':'−'}${RM(x.amount)}</b></div>`).join('')}
+function go(v){document.querySelectorAll('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));document.querySelectorAll('nav [data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));scrollTo(0,0)}
+document.querySelectorAll('nav [data-v]').forEach(b=>b.onclick=()=>go(b.dataset.v));
+document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{range=b.dataset.r;document.querySelectorAll('.seg button').forEach(x=>x.classList.toggle('on',x===b));load()});
+$('#add').onclick=()=>$('#sh').classList.add('on');$('#sh').onclick=e=>{if(e.target.id==='sh')$('#sh').classList.remove('on')};
+$('#f').onsubmit=async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.target));const r=await fetch('/api/transactions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});
+ if(!r.ok){$('#er').textContent=(await r.json()).error;return}$('#er').textContent='';e.target.reset();$('#sh').classList.remove('on');load()};
+load();
+</script></body></html>

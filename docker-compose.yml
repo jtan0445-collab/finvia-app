@@ -1,0 +1,8 @@
+services:
+  finvia:
+    build: .
+    restart: unless-stopped
+    ports: ["80:3000"]
+    volumes: ["finvia-data:/data"]
+volumes:
+  finvia-data:
